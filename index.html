@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Mohsin &amp; Hafsa — Wedding Invitation</title>
+<meta name="theme-color" content="#FBF5EE" />
+
+<!-- The preview card WhatsApp shows above the link.
+     If the site address ever changes, update it in the three lines below. -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="​" />
+<meta property="og:description" content="​" />
+<meta property="og:locale" content="ur_PK" />
+<meta property="og:url" content="https://yellow-snowflake-86ef.xmohsinaslam123.workers.dev/" />
+<meta property="og:image" content="https://yellow-snowflake-86ef.xmohsinaslam123.workers.dev/preview.jpg" />
+<meta property="og:image:secure_url" content="https://yellow-snowflake-86ef.xmohsinaslam123.workers.dev/preview.jpg" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="شادی کا دعوت نامہ — Mohsin &amp; Hafsa" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="​" />
+<meta name="twitter:description" content="​" />
+<meta name="twitter:image" content="https://yellow-snowflake-86ef.xmohsinaslam123.workers.dev/preview.jpg" />
+<link rel="icon" href="seal.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400&family=Italianno&family=Jost:wght@300;400&family=Marcellus&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  #loader { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center;
+            background: radial-gradient(120% 90% at 50% 0%, #FFFCF7 0%, #FBF5EE 42%, #F5E4DE 100%); }
+</style>
+</head>
+<body class="is-loading">
+
+<!-- ============ reusable shapes ============ -->
+<svg class="svg-defs" aria-hidden="true" focusable="false">
+  <defs>
+    <g id="sprig">
+      <path d="M2 2 C 40 10, 62 30, 74 66" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M18 8 C 26 2, 38 2, 44 9 C 36 16, 24 16, 18 8 Z" fill="currentColor" opacity=".5"/>
+      <path d="M12 16 C 6 24, 6 36, 14 42 C 20 34, 20 22, 12 16 Z" fill="currentColor" opacity=".38"/>
+      <path d="M40 22 C 48 18, 58 21, 61 29 C 52 33, 43 30, 40 22 Z" fill="currentColor" opacity=".45"/>
+      <path d="M30 34 C 24 42, 25 53, 33 58 C 38 49, 37 39, 30 34 Z" fill="currentColor" opacity=".32"/>
+      <circle cx="57" cy="47" r="4.2" fill="currentColor" opacity=".55"/>
+      <circle cx="65" cy="58" r="2.6" fill="currentColor" opacity=".4"/>
+      <circle cx="49" cy="13" r="2.2" fill="currentColor" opacity=".4"/>
+    </g>
+
+    <g id="petal">
+      <path d="M8 0 C 14 6, 14 14, 8 20 C 2 14, 2 6, 8 0 Z" fill="currentColor"/>
+    </g>
+
+    <g id="flourish">
+      <path d="M0 8 H 52" stroke="currentColor" stroke-width="1" opacity=".5"/>
+      <path d="M108 8 H 160" stroke="currentColor" stroke-width="1" opacity=".5"/>
+      <path d="M80 1 C 86 5, 88 11, 80 15 C 72 11, 74 5, 80 1 Z" fill="currentColor" opacity=".75"/>
+      <circle cx="62" cy="8" r="2.4" fill="currentColor" opacity=".6"/>
+      <circle cx="98" cy="8" r="2.4" fill="currentColor" opacity=".6"/>
+      <circle cx="70" cy="8" r="1.4" fill="currentColor" opacity=".4"/>
+      <circle cx="90" cy="8" r="1.4" fill="currentColor" opacity=".4"/>
+    </g>
+
+
+
+
+
+  </defs>
+</svg>
+
+<div class="loader" id="loader" role="status" aria-label="Loading the invitation">
+  <div class="loader-inner">
+    <svg class="loader-mark" viewBox="0 0 160 16" aria-hidden="true"><use href="#flourish"/></svg>
+    <div class="loader-bar"><span class="loader-fill" id="loaderFill"></span></div>
+    <p class="loader-pct" id="loaderPct">0%</p>
+  </div>
+</div>
+
+<div class="rotate-hint" aria-hidden="true">
+  <svg viewBox="0 0 64 64" aria-hidden="true">
+    <rect x="21" y="6" width="22" height="40" rx="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <line x1="28" y1="41" x2="36" y2="41" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M14 52 A 18 18 0 0 0 50 52" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".65"/>
+    <path d="M14 52 L10 47 M14 52 L19 49" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity=".65"/>
+  </svg>
+  <p>Please turn your phone upright</p>
+</div>
+
+<audio id="sealSound" src="music.mp3" preload="auto" playsinline></audio>
+
+<div class="stage" id="stage">
+
+  <!-- ==================== 1. OPENING ==================== -->
+  <section class="scene scene-open is-active" id="scene-1" data-scene="1" aria-label="Opening">
+    <div class="petals" data-petals="8" aria-hidden="true"></div>
+    <svg class="corner corner-tl" viewBox="0 0 80 80" aria-hidden="true"><use href="#sprig"/></svg>
+    <svg class="corner corner-tr" viewBox="0 0 80 80" aria-hidden="true"><use href="#sprig"/></svg>
+    <svg class="corner corner-bl" viewBox="0 0 80 80" aria-hidden="true"><use href="#sprig"/></svg>
+    <svg class="corner corner-br" viewBox="0 0 80 80" aria-hidden="true"><use href="#sprig"/></svg>
+
+    <div class="scene-inner">
+      <div class="bismillah-block">
+        <p class="bismillah">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+        <p class="bismillah-roman">In the name of Allah, the Most Gracious, the Most Merciful</p>
+      </div>
+
+      <div class="envelope-wrap">
+        <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open the invitation">
+          <div class="env-flap">
+            <div class="flap-face"></div>
+            <div class="flap-lining"></div>
+          </div>
+          <div class="env-back"></div>
+          <div class="env-slot">
+            <div class="env-card">
+              <img class="env-card-art" src="dawat-nama.png" alt="شادی کا دعوت نامہ" draggable="false" />
+            </div>
+          </div>
+          <div class="env-front"></div>
+          <img class="env-seal" src="seal.png" alt="" draggable="false" />
+        </div>
+        <p class="env-hint">Tap the seal to open</p>
+      </div>
+
+      <div class="opening-text">
+        <p class="eyebrow-line">With the blessings of Almighty Allah, our families invite you to the wedding of</p>
+        <p class="names-script">Mohsin <span class="amp">&amp;</span> Hafsa</p>
+        <svg class="flourish" viewBox="0 0 160 16" aria-hidden="true"><use href="#flourish"/></svg>
+
+        <div class="countdown" id="countdown">
+          <p class="cd-caption" data-cd-caption>Countdown</p>
+          <div class="cd-row">
+            <div class="cd-unit"><span class="cd-num" data-cd="days">--</span><span class="cd-label">Days</span></div>
+            <div class="cd-unit"><span class="cd-num" data-cd="hours">--</span><span class="cd-label">Hours</span></div>
+            <div class="cd-unit"><span class="cd-num" data-cd="minutes">--</span><span class="cd-label">Minutes</span></div>
+            <div class="cd-unit"><span class="cd-num" data-cd="seconds">--</span><span class="cd-label">Seconds</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 2. MEHNDI ==================== -->
+  <section class="scene scene-mehndi" id="scene-2" data-scene="2" aria-label="Mehndi">
+    <div class="petals" data-petals="10" aria-hidden="true"></div>
+
+    <div class="scene-inner">
+      <div class="card-shell is-image" data-event="mehndi" style="--card-w: 1060; --card-h: 1484">
+        <div class="card-inner">
+          <div class="card-face card-front card-image">
+            <img data-src="mehndi-card.jpg" alt="Mehendi ceremony invitation" />
+          </div>
+          <div class="card-face card-back">
+            <h2 class="back-title">Getting there</h2>
+            <p class="back-sub" data-field="venue">[ Venue name ]</p>
+            <a class="map" data-map target="_blank" rel="noopener">
+              <iframe class="map-frame" title="Map of the venue" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+              <span class="map-empty">Add the venue in <code>script.js</code> and the map appears here</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <button class="flip-btn outside" type="button" data-flip data-front="Show location" data-back="Back to invitation">Show location</button>
+    </div>
+  </section>
+
+  <!-- ==================== 3. BARAAT ==================== -->
+  <section class="scene scene-baraat" id="scene-3" data-scene="3" aria-label="Baraat">
+    <div class="petals" data-petals="8" aria-hidden="true"></div>
+    <svg class="arch" viewBox="0 0 400 400" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+      <path d="M40 400 L40 190 Q 200 52 360 190 L360 400" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".45"/>
+      <path d="M58 400 L58 198 Q 200 72 342 198 L342 400" fill="none" stroke="currentColor" stroke-width=".7" opacity=".26"/>
+      <circle cx="200" cy="62" r="5" fill="currentColor" opacity=".5"/>
+      <circle cx="120" cy="104" r="3.5" fill="currentColor" opacity=".4"/>
+      <circle cx="280" cy="104" r="3.5" fill="currentColor" opacity=".4"/>
+    </svg>
+
+    <div class="scene-inner">
+      <div class="card-shell is-image" data-event="baraat" style="--card-w: 1060; --card-h: 1484">
+        <div class="card-inner">
+          <div class="card-face card-front card-image">
+            <img data-src="baraat-card.jpg" alt="Baraat invitation" />
+          </div>
+          <div class="card-face card-back">
+            <h2 class="back-title">Getting there</h2>
+            <p class="back-sub" data-field="venue">[ Venue name ]</p>
+            <a class="map" data-map target="_blank" rel="noopener">
+              <iframe class="map-frame" title="Map of the venue" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+              <span class="map-empty">Add the venue in <code>script.js</code> and the map appears here</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <button class="flip-btn outside" type="button" data-flip data-front="Show location" data-back="Back to invitation">Show location</button>
+    </div>
+  </section>
+
+  <!-- ==================== 4. WALIMA ==================== -->
+  <section class="scene scene-walima" id="scene-4" data-scene="4" aria-label="Walima">
+    <div class="petals" data-petals="8" aria-hidden="true"></div>
+    <svg class="halo" viewBox="0 0 400 400" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+      <circle cx="200" cy="188" r="150" fill="none" stroke="currentColor" stroke-width="1" opacity=".32"/>
+      <circle cx="200" cy="188" r="168" fill="none" stroke="currentColor" stroke-width=".6" opacity=".18"/>
+    </svg>
+
+    <div class="scene-inner">
+      <div class="card-shell is-image" data-event="walima" style="--card-w: 1071; --card-h: 1469">
+        <div class="card-inner">
+          <div class="card-face card-front card-image">
+            <img data-src="walima-card.jpg" alt="Walima invitation" />
+          </div>
+          <div class="card-face card-back">
+            <h2 class="back-title">Getting there</h2>
+            <p class="back-sub" data-field="venue">[ Venue name ]</p>
+            <a class="map" data-map target="_blank" rel="noopener">
+              <iframe class="map-frame" title="Map of the venue" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+              <span class="map-empty">Add the venue in <code>script.js</code> and the map appears here</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <button class="flip-btn outside" type="button" data-flip data-front="Show location" data-back="Back to invitation">Show location</button>
+    </div>
+  </section>
+
+  <!-- ==================== 5. CLOSING ==================== -->
+  <section class="scene scene-close" id="scene-5" data-scene="5" aria-label="Closing">
+    <div class="petals" data-petals="10" aria-hidden="true"></div>
+    <svg class="corner corner-tl" viewBox="0 0 80 80" aria-hidden="true"><use href="#sprig"/></svg>
+    <svg class="corner corner-tr" viewBox="0 0 80 80" aria-hidden="true"><use href="#sprig"/></svg>
+    <svg class="corner corner-bl" viewBox="0 0 80 80" aria-hidden="true"><use href="#sprig"/></svg>
+    <svg class="corner corner-br" viewBox="0 0 80 80" aria-hidden="true"><use href="#sprig"/></svg>
+
+    <div class="scene-inner">
+      <div class="closing-text closing-verse">
+        <p class="bismillah">وَخَلَقْنَاكُمْ أَزْوَاجًا</p>
+        <p class="bismillah-roman">And We created you in pairs</p>
+      </div>
+      <div class="envelope-wrap closing">
+        <div class="envelope env-closing" id="envelopeClose" aria-hidden="true">
+          <div class="env-flap">
+            <div class="flap-face"></div>
+            <div class="flap-lining"></div>
+          </div>
+          <div class="env-back"></div>
+          <div class="env-slot">
+            <div class="env-card">
+              <img class="env-card-art" src="dawat-nama.png" alt="شادی کا دعوت نامہ" draggable="false" />
+            </div>
+          </div>
+          <div class="env-front"></div>
+          <img class="env-seal" src="seal.png" alt="" draggable="false" />
+        </div>
+      </div>
+
+      <div class="closing-text">
+        <p class="closing-line">We look forward to your presence, love, and prayers on our special day</p>
+        <svg class="flourish" viewBox="0 0 160 16" aria-hidden="true"><use href="#flourish"/></svg>
+        <p class="names-script closing-names">Mohsin <span class="amp">&amp;</span> Hafsa</p>
+        <p class="closing-dua">وَبَارَكَ اللّٰهُ لَكُمَا</p>
+        <button class="restart" type="button" id="restart">Read the invitation again</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<nav class="pager" aria-label="Invitation pages">
+  <button class="nav-arrow prev" id="prev" type="button" aria-label="Previous page">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <ol class="dots" id="dots">
+    <li><button type="button" data-go="1" aria-label="Invitation"><span></span></button></li>
+    <li><button type="button" data-go="2" aria-label="Mehndi"><span></span></button></li>
+    <li><button type="button" data-go="3" aria-label="Baraat"><span></span></button></li>
+    <li><button type="button" data-go="4" aria-label="Walima"><span></span></button></li>
+    <li><button type="button" data-go="5" aria-label="Closing"><span></span></button></li>
+  </ol>
+  <button class="nav-arrow next" id="next" type="button" aria-label="Next page">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</nav>
+
+<p class="swipe-hint" id="swipeHint">Swipe or use the arrows</p>
+
+<script src="script.js"></script>
+</body>
+</html>
