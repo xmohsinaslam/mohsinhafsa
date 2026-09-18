@@ -1,0 +1,950 @@
+/* =========================================================
+   Mohsin & Hafsa — wedding invitation
+   1. tokens          5. cards
+   2. base + stage    6. scene themes
+   3. ornament        7. navigation
+   4. envelope        8. responsive + motion
+   ========================================================= */
+
+/* ---------- 1. tokens ---------- */
+:root {
+  /* shared */
+  --ivory:      #FBF5EE;
+  --ivory-warm: #F6EDE1;
+  --blush:      #EFD3CC;
+  --rose:       #BE8880;
+  --ink:        #3B2E2B;
+  --gold:       #C7A15B;
+
+  /* mehndi */
+  --lilac-night: #3B2758;
+  --lilac-deep:  #5B3F87;
+  --lilac-mist:  #E4D8F2;
+  --marigold:    #E4A03C;
+  --leaf:        #7E9B6C;
+
+  /* baraat */
+  --maroon:    #4C141E;
+  --redstone:  #8A2130;
+  --gold-foil: #D5B071;
+
+  /* walima */
+  --navy:   #101E38;
+  --navy-2: #1C3055;
+  --silver: #C4C9D6;
+
+  /* type */
+  --display: "Marcellus", Georgia, serif;
+  --script:  "Italianno", "Marcellus", cursive;
+  --body:    "Jost", system-ui, -apple-system, sans-serif;
+  --arabic:  "Amiri", serif;
+
+  /* defaults a scene overrides */
+  --bg:      var(--ivory);
+  --bg-2:    var(--blush);
+  --fg:      var(--ink);
+  --accent:  var(--gold);
+  --paper:   #FFFDF9;
+
+  --ease: cubic-bezier(.22, .78, .26, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ---------- 2. base + stage ---------- */
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--ink);
+}
+
+body {
+  font-family: var(--body);
+  font-weight: 300;
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior: none;
+}
+
+.svg-defs { position: absolute; width: 0; height: 0; }
+
+/* ---------- opening loader ---------- */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(120% 90% at 50% 0%, #FFFCF7 0%, var(--ivory) 42%, #F5E4DE 100%);
+  transition: opacity .7s ease, visibility 0s .7s;
+}
+.loader.is-done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.05rem;
+  animation: rise .8s var(--ease) .1s backwards;
+}
+.loader-mark {
+  width: clamp(124px, 34vw, 168px);
+  height: auto;
+  color: var(--gold);
+  opacity: .85;
+}
+.loader-bar {
+  width: clamp(136px, 40vw, 190px);
+  height: 2px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--rose) 24%, transparent);
+}
+.loader-fill {
+  display: block;
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--rose), var(--gold));
+  transition: width .4s var(--ease);
+}
+.loader-pct {
+  margin: 0;
+  font-family: var(--body);
+  font-size: .64rem;
+  letter-spacing: .24em;
+  font-variant-numeric: tabular-nums;
+  color: var(--rose);
+}
+
+/* hold the first page's entrance until the loader steps aside */
+body.is-loading .scene.is-active .reveal { animation-play-state: paused; }
+
+.stage {
+  position: fixed;
+  inset: 0;
+  isolation: isolate;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: clamp(.7rem, 4vw, 2.6rem) clamp(1rem, 5vw, 3rem) clamp(3.9rem, 10vh, 6.4rem);
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--fg);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.03);
+  transition: opacity .7s var(--ease), transform .8s var(--ease), visibility 0s .8s;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scene.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity .7s var(--ease), transform .8s var(--ease), visibility 0s 0s;
+  z-index: 2;
+}
+
+.scene-inner {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 40rem;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(.5rem, 2.4vh, 1.6rem);
+}
+
+/* staggered entrance for whatever the active scene holds */
+.scene.is-active .reveal {
+  animation: rise .9s var(--ease) backwards;
+  animation-delay: calc(var(--i, 0) * 130ms + 180ms);
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- 3. ornament: corners, petals, backdrops ---------- */
+.corner {
+  position: absolute;
+  width: clamp(62px, 13vw, 104px);
+  height: auto;
+  color: var(--accent);
+  opacity: .55;
+  z-index: 1;
+  pointer-events: none;
+}
+.corner-tl { top: clamp(.7rem, 3vw, 1.8rem); left: clamp(.7rem, 3vw, 1.8rem); }
+.corner-tr { top: clamp(.7rem, 3vw, 1.8rem); right: clamp(.7rem, 3vw, 1.8rem); transform: scaleX(-1); }
+.corner-bl { bottom: clamp(3.6rem, 9vh, 5rem); left: clamp(.7rem, 3vw, 1.8rem); transform: scaleY(-1); }
+.corner-br { bottom: clamp(3.6rem, 9vh, 5rem); right: clamp(.7rem, 3vw, 1.8rem); transform: scale(-1); }
+
+.petals {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+.petal {
+  position: absolute;
+  top: -8%;
+  left: var(--x);
+  width: var(--s);
+  color: var(--accent);
+  opacity: 0;
+}
+.scene.is-active .petal {
+  animation: drift var(--dur) linear var(--delay) infinite;
+}
+.petal svg { display: block; width: 100%; height: auto; }
+@keyframes drift {
+  0%   { opacity: 0;   transform: translate3d(0, 0, 0) rotate(0deg); }
+  12%  { opacity: .62; }
+  50%  { transform: translate3d(var(--sway), 55vh, 0) rotate(180deg); }
+  88%  { opacity: .48; }
+  100% { opacity: 0;   transform: translate3d(0, 112vh, 0) rotate(360deg); }
+}
+
+/* ambient art at the edges of a scene */
+.arch, .halo {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  color: var(--ambient, currentColor);
+  top: 0; left: 50%;
+  translate: -50% 0;
+  width: min(128vh, 116vw);
+  height: min(94vh, 720px);
+}
+
+.scene.is-active .arch,
+.scene.is-active .halo {
+  animation: fadeAmbient 1.6s var(--ease) .2s backwards;
+}
+@keyframes fadeAmbient { from { opacity: 0; } }
+
+/* ---------- 4. envelope ---------- */
+.envelope-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .9rem;
+}
+
+.envelope {
+  --env-w: min(clamp(214px, 60vw, 330px), 43vh);
+  position: relative;
+  width: var(--env-w);
+  aspect-ratio: 624 / 464;
+  perspective: 1200px;
+  cursor: pointer;
+  outline: none;
+  transition: transform .55s var(--ease);
+}
+.envelope:focus-visible { outline: 2px solid var(--accent); outline-offset: 12px; border-radius: 6px; }
+
+/* the envelope without its flap, in two layers so the card can sit inside it.
+   The clip follows the seams printed on the envelope: the card shows through
+   the trapezoid at the top and stays tucked behind everything below it. */
+.env-back,
+.env-front {
+  position: absolute;
+  inset: 0;
+  background: url("env-body.png") center / 100% 100% no-repeat;
+}
+.env-back  { z-index: 1; filter: drop-shadow(0 18px 24px rgba(59, 46, 43, .3)); }
+.env-front {
+  z-index: 3;
+  -webkit-clip-path: polygon(0% 0%, 24% 36.5%, 75% 36%, 98% 0%, 100% 0%, 100% 100%, 0% 100%);
+  clip-path: polygon(0% 0%, 24% 36.5%, 75% 36%, 98% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+/* the card may rise above the envelope but never below it */
+.env-slot {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  -webkit-clip-path: inset(-500% 0px 0px 0px);
+  clip-path: inset(-500% 0px 0px 0px);
+  pointer-events: none;
+}
+
+/* the flap, hinged along the top edge */
+.env-flap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 73.71%;
+  z-index: 5;
+  transform-style: preserve-3d;
+  transform-origin: top center;
+  transform: rotateX(0deg);
+  transition: transform 1.05s var(--ease) .08s, z-index 0s .5s;
+}
+.flap-face,
+.flap-lining {
+  position: absolute;
+  inset: 0;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flap-face   { background-image: url("env-flap.png"); }
+.flap-lining { background-image: url("env-flap-lining.png"); transform: rotateX(180deg); }
+
+/* the card that rises out of it */
+.env-card {
+  position: absolute;
+  z-index: 1;
+  left: 9%;
+  top: 39%;
+  width: 82%;
+  height: 78%;
+  padding: 6% 3% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .34em;
+  border-radius: 2px;
+  background: linear-gradient(174deg, #FFFDF8 0%, #FDF7EC 58%, #F6EEE0 100%);
+  box-shadow: 0 16px 28px -18px rgba(59, 46, 43, .6);
+  transform: translateY(0);
+  transition: transform .95s var(--ease) 1.15s;
+}
+.env-card-art {
+  display: block;
+  width: 94%;
+  height: auto;
+  mix-blend-mode: multiply;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.env-seal {
+  position: absolute;
+  left: 50%;
+  top: 71%;
+  translate: -50% -50%;
+  z-index: 6;
+  width: 20%;
+  height: auto;
+  filter: drop-shadow(0 6px 10px rgba(59, 46, 43, .42));
+  transition: transform .6s var(--ease), opacity .45s ease;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* a quiet pulse so the seal reads as the thing to touch */
+.envelope:not(.is-open):not(.env-closing) .env-seal { animation: sealPulse 3.4s ease-in-out 1.4s infinite; }
+@keyframes sealPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.07); }
+}
+.envelope:hover:not(.is-open):not(.env-closing) { transform: translateY(-5px); }
+
+/* opened: seal breaks away, flap lifts, card rises */
+.envelope.is-open .env-seal { animation: none; opacity: 0; transform: translateY(16%) rotate(-14deg) scale(.82); }
+.envelope.is-open .env-flap { transform: translateZ(-26px) rotateX(-174deg); z-index: 0; }
+.envelope.is-open .env-card { transform: translateY(-92%); }
+
+/* last page: the envelope arrives open, then shuts and is sealed */
+.env-closing { cursor: default; }
+.env-closing .env-flap { transform: translateZ(-26px) rotateX(-174deg); z-index: 0; transition: z-index 0s 1.83s; }
+.env-closing .env-card { transform: translateY(-92%); transition: transform .95s var(--ease) .35s; }
+.env-closing .env-seal { opacity: 0; transform: scale(1.7) rotate(-10deg); transition: opacity .4s ease, transform .5s var(--ease); }
+
+.scene-close.is-active .env-closing .env-card { transform: translateY(0); }
+.scene-close.is-active .env-closing .env-flap { z-index: 5; animation: flapShut 1.25s 1.2s both; }
+
+/* one continuous swing; the stacking order swaps at 1.83s, the exact moment the
+   flap is edge-on at 90deg, so the swap can never be seen */
+@keyframes flapShut {
+  0%   { transform: translateZ(-26px) rotateX(-174deg); animation-timing-function: cubic-bezier(.42, 0, .72, .42); }
+  50%  { transform: translateZ(-13px) rotateX(-90deg);  animation-timing-function: cubic-bezier(.28, .58, .3, 1); }
+  100% { transform: translateZ(0) rotateX(0deg); }
+}
+.scene-close.is-active .env-closing .env-seal { opacity: 1; transform: none; transition: opacity .4s ease 2.55s, transform .55s var(--ease) 2.55s; }
+
+/* used for one frame when page one is reset, so the envelope is simply shut again */
+.envelope.no-anim,
+.envelope.no-anim * { transition: none !important; animation: none !important; }
+
+/* while the envelope is opening the page quiets down around it */
+.scene-open .bismillah-block,
+.scene-open .opening-text { transition: opacity .55s ease; }
+.scene-open.is-opening .bismillah-block,
+.scene-open.is-opening .opening-text { opacity: 0; }
+
+.env-hint {
+  margin: 0;
+  font-size: clamp(.72rem, 2.3vw, .82rem);
+  letter-spacing: .1em;
+  color: var(--rose);
+  transition: opacity .4s ease;
+}
+.envelope.is-open ~ .env-hint { opacity: 0; }
+
+/* ---------- opening page type ---------- */
+.bismillah {
+  margin: 0;
+  font-family: var(--arabic);
+  font-size: min(clamp(1.4rem, 6vw, 2.2rem), 3.6vh);
+  line-height: 1.7;
+  color: var(--accent);
+  direction: rtl;
+}
+.bismillah-roman {
+  margin: .45rem 0 0;
+  font-size: clamp(.68rem, 2.5vw, .78rem);
+  letter-spacing: .07em;
+  color: var(--rose);
+}
+
+.opening-text { display: flex; flex-direction: column; align-items: center; gap: .5rem; }
+
+.eyebrow-line {
+  margin: 0;
+  max-width: 30ch;
+  font-size: clamp(.76rem, 2.7vw, .88rem);
+  line-height: 1.75;
+  color: color-mix(in srgb, var(--fg) 74%, transparent);
+}
+
+.names-script {
+  margin: 0;
+  font-family: var(--script);
+  font-size: min(clamp(3.2rem, 15vw, 5.4rem), 11vh);
+  line-height: .92;
+  color: var(--fg);
+}
+.names-script .amp { color: var(--accent); padding: 0 .06em; }
+
+.names-full {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(.78rem, 3vw, .96rem);
+  letter-spacing: .06em;
+  color: color-mix(in srgb, var(--fg) 80%, transparent);
+}
+.names-full .dot { color: var(--accent); padding: 0 .3em; }
+
+/* ---------- countdown on the opening page ---------- */
+.countdown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .4rem;
+  margin-top: .1rem;
+}
+.cd-caption {
+  margin: 0;
+  font-size: clamp(.58rem, 2.1vw, .66rem);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--rose);
+}
+.cd-row {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(.75rem, 4vw, 1.5rem);
+}
+.cd-unit {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .16rem;
+  min-width: 2.9rem;
+}
+.cd-unit + .cd-unit::before {
+  content: "";
+  position: absolute;
+  left: calc(clamp(.75rem, 4vw, 1.5rem) / -2);
+  top: .22em;
+  bottom: 1.1em;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--gold) 70%, transparent), transparent);
+}
+.cd-num {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: min(clamp(1.45rem, 6.4vw, 2rem), 3.4vh);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+}
+.cd-label {
+  font-size: clamp(.52rem, 1.95vw, .6rem);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--rose) 88%, transparent);
+}
+
+.flourish {
+  width: clamp(120px, 34vw, 170px);
+  height: auto;
+  color: var(--accent);
+}
+
+/* ---------- 5. cards ---------- */
+.card-shell {
+  position: relative;
+  width: min(100%, 25.5rem);
+  perspective: 1600px;
+}
+.card-inner {
+  position: relative;
+  display: grid;
+  transform-style: preserve-3d;
+  transition: transform .9s var(--ease);
+}
+.card-shell.is-flipped .card-inner { transform: rotateY(180deg); }
+
+.card-face {
+  grid-area: 1 / 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(.42rem, 1.15vh, .7rem);
+  padding: clamp(1.45rem, 4.6vw, 1.95rem) clamp(1.2rem, 4.4vw, 1.8rem);
+  background: var(--paper);
+  border-radius: 2px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, .6) inset,
+    0 34px 60px -34px rgba(0, 0, 0, .6);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.card-face::before {
+  content: "";
+  position: absolute;
+  inset: clamp(7px, 2.2vw, 11px);
+  border: 1px solid color-mix(in srgb, var(--accent) 52%, transparent);
+  pointer-events: none;
+}
+.card-back { transform: rotateY(180deg); justify-content: center; }
+
+/* a card whose front is a single piece of artwork */
+.card-shell.is-image {
+  --card-w: 1060;
+  --card-h: 1484;
+  width: min(100%, 23rem, calc(62vh * var(--card-w) / var(--card-h)));
+  aspect-ratio: var(--card-w) / var(--card-h);
+}
+.card-shell.is-image .card-inner,
+.card-shell.is-image .card-face { height: 100%; }
+.card-face.card-image { padding: 0; overflow: hidden; background: #FFFCF6; }
+.card-face.card-image::before { content: none; }
+.card-face.card-image img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+.flip-btn {
+  margin-top: .2rem;
+  padding: .62em 1.5em;
+  font-family: var(--body);
+  font-size: clamp(.72rem, 2.6vw, .8rem);
+  letter-spacing: .08em;
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--accent) 70%, transparent);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background .35s ease, color .35s ease, border-color .35s ease;
+}
+.flip-btn:hover,
+.flip-btn:focus-visible {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+}
+.flip-btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+
+.flip-btn.outside {
+  margin-top: 0;
+  padding: .52em 1.3em;
+  font-size: clamp(.68rem, 2.4vw, .76rem);
+}
+
+/* card back */
+.back-title {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(1.3rem, 5.4vw, 1.6rem);
+  color: var(--fg);
+}
+.back-sub {
+  margin: 0;
+  font-size: clamp(.76rem, 2.8vw, .86rem);
+  color: color-mix(in srgb, var(--fg) 70%, transparent);
+}
+.map {
+  position: relative;
+  display: block;
+  width: min(100%, 17rem);
+  aspect-ratio: 4 / 3;
+  border-radius: 3px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--fg) 8%, #fff);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  box-shadow: 0 8px 18px -12px rgba(0, 0, 0, .5);
+  transition: box-shadow .35s ease, transform .35s var(--ease);
+  cursor: pointer;
+}
+.map:hover,
+.map:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -12px rgba(0, 0, 0, .55); }
+.map:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.map-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: none;
+  pointer-events: none;      /* the whole map is one link */
+}
+.map.has-map .map-frame { display: block; }
+.map.has-map .map-empty { display: none; }
+.map-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  text-align: center;
+  font-size: .66rem;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--fg) 55%, transparent);
+}
+.map-empty code { font-size: .95em; }
+.map:not([href]) { cursor: default; pointer-events: none; }
+
+/* ---------- 6. scene themes ---------- */
+.scene-open,
+.scene-close {
+  --bg: radial-gradient(120% 90% at 50% 0%, #FFFCF7 0%, var(--ivory) 42%, #F5E4DE 100%);
+  --fg: var(--ink);
+  --accent: var(--rose);
+  --paper: #FFFDFA;
+}
+
+.scene-mehndi {
+  --bg: radial-gradient(132% 102% at 50% 0%, #F5EDFE 0%, #E4D3F8 42%, #C7AAEA 100%);
+  --fg: #3A2954;
+  --accent: #6B3FA0;
+  --paper: #FDFAFF;
+  --ambient: #7A55BC;
+}
+.scene-mehndi .petal { color: #4B2C7A; }   /* same plum as the button */
+.scene-mehndi .card-face { box-shadow: 0 30px 62px -26px rgba(58, 32, 104, .55); }
+.scene-mehndi .flip-btn.outside {
+  color: #F7EFFF;
+  background: #4B2C7A;
+  border-color: #4B2C7A;
+}
+.scene-mehndi .flip-btn.outside:hover,
+.scene-mehndi .flip-btn.outside:focus-visible,
+.scene-mehndi .flip-btn.outside:active { background: #5E3B96; border-color: #5E3B96; color: #F7EFFF; }
+
+.scene-baraat {
+  --bg: radial-gradient(130% 100% at 50% 100%, var(--redstone) 0%, #6B1926 42%, var(--maroon) 100%);
+  --fg: #4C141E;
+  --accent: #A9803C;
+  --paper: #FDF6EA;
+}
+.scene-baraat { --ambient: var(--gold-foil); }
+.scene-baraat .arch { opacity: .8; }
+.scene-baraat .petal { color: var(--gold-foil); }
+.scene-baraat .card-face { box-shadow: 0 34px 70px -30px rgba(30, 4, 9, .85); }
+.scene-baraat .flip-btn.outside {
+  color: #3B0F17;
+  background: var(--gold-foil);
+  border-color: var(--gold-foil);
+}
+.scene-baraat .flip-btn.outside:hover,
+.scene-baraat .flip-btn.outside:focus-visible,
+.scene-baraat .flip-btn.outside:active { background: #E6C994; border-color: #E6C994; color: #3B0F17; }
+
+.scene-walima {
+  --bg: radial-gradient(125% 95% at 50% 6%, var(--navy-2) 0%, #16294A 38%, var(--navy) 100%);
+  --fg: #16294A;
+  --accent: #8B93A8;
+  --paper: #F7F4EE;
+}
+.scene-walima { --ambient: var(--silver); }
+.scene-walima .halo { opacity: .9; }
+.scene-walima .petal { color: var(--silver); }
+.scene-walima .card-face { box-shadow: 0 34px 70px -30px rgba(4, 10, 24, .85); }
+.scene-walima .flip-btn.outside {
+  color: #101E38;
+  background: var(--silver);
+  border-color: var(--silver);
+}
+.scene-walima .flip-btn.outside:hover,
+.scene-walima .flip-btn.outside:focus-visible,
+.scene-walima .flip-btn.outside:active { background: #DEE2EC; border-color: #DEE2EC; color: #101E38; }
+
+/* closing page: the envelope seals itself alone, then the words arrive */
+.scene-close .closing-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(.45rem, 2.2vh, 1.6rem);
+}
+.scene-close .closing-text > * {
+  opacity: 1;
+  transform: none;
+  transition: opacity .75s ease, transform .75s var(--ease);
+}
+.scene-close .closing-text > *:nth-child(1) { transition-delay: .10s; }
+.scene-close .closing-text > *:nth-child(2) { transition-delay: .22s; }
+.scene-close .closing-text > *:nth-child(3) { transition-delay: .34s; }
+.scene-close .closing-text > *:nth-child(4) { transition-delay: .46s; }
+.scene-close .closing-text > *:nth-child(5) { transition-delay: .58s; }
+.scene-close.is-sealing .closing-text > * {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: none;
+}
+
+/* the verse above the envelope sits as one tight pair of lines */
+.scene-close .closing-verse { gap: 0; }
+.scene-close .closing-verse .bismillah { line-height: 1.35; }
+.scene-close .closing-verse .bismillah-roman { margin-top: .12rem; }
+
+.scene-close .envelope-wrap.closing { transform: translateY(0); transition: transform 1s var(--ease); }
+.scene-close.is-sealing .envelope-wrap.closing { transform: translateY(var(--lift, 0px)); transition: none; }
+
+.closing-line {
+  margin: 0;
+  max-width: 23ch;
+  font-family: var(--display);
+  font-size: min(clamp(1.15rem, 5.4vw, 1.6rem), 2.9vh);
+  line-height: 1.55;
+  color: var(--fg);
+}
+.closing-names { font-size: min(clamp(2.6rem, 12vw, 4rem), 9vh); }
+.closing-dua {
+  margin: 0;
+  font-family: var(--arabic);
+  font-size: min(clamp(1rem, 4.2vw, 1.3rem), 2.4vh);
+  color: var(--accent);
+  direction: rtl;
+}
+.restart {
+  margin-top: .4rem;
+  padding: .68em 1.6em;
+  font-family: var(--body);
+  font-size: clamp(.72rem, 2.6vw, .8rem);
+  letter-spacing: .08em;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--rose);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background .35s ease, color .35s ease;
+}
+.restart:hover, .restart:focus-visible { background: var(--rose); color: #FFF8F5; }
+
+/* ---------- 7. navigation ---------- */
+.pager {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(.9rem, 3.2vh, 1.7rem);
+  translate: -50% 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: clamp(.5rem, 2.4vw, 1rem);
+  padding: .42rem .55rem;
+  border-radius: 100px;
+  background: color-mix(in srgb, var(--nav-bg, #FFFDFA) 72%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 28px -18px rgba(0, 0, 0, .6);
+  transition: background .7s ease, opacity .5s ease, visibility 0s 0s;
+}
+
+/* page one has no pager — the seal is the only way in */
+body[data-scene="1"] .pager,
+body[data-scene="1"] .swipe-hint {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .35s ease, visibility 0s .35s;
+}
+
+.nav-arrow {
+  width: 2.1rem;
+  height: 2.1rem;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: var(--nav-ink, #3B2E2B);
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background .3s ease, opacity .3s ease, color .7s ease;
+}
+.nav-arrow svg { width: 1.05rem; height: 1.05rem; }
+.nav-arrow:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+.nav-arrow[disabled] { opacity: .25; pointer-events: none; }
+.nav-arrow:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: .1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dots button {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.dots button span {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--nav-ink, #3B2E2B) 32%, transparent);
+  transition: width .45s var(--ease), background .45s ease;
+}
+.dots button[aria-current="true"] span {
+  width: 20px;
+  border-radius: 3px;
+  background: var(--nav-ink, #3B2E2B);
+}
+.dots button:focus-visible { outline: 2px solid var(--nav-ink, #3B2E2B); outline-offset: 0; border-radius: 4px; }
+
+/* pager tint follows the scene */
+body[data-scene="1"], body[data-scene="5"] { --nav-bg: #FFFDFA; --nav-ink: #6B4A44; }
+body[data-scene="2"] { --nav-bg: #FFFFFF; --nav-ink: #4A3172; }
+body[data-scene="3"] { --nav-bg: #FBEFE0; --nav-ink: #6B1926; }
+body[data-scene="4"] { --nav-bg: #EEF1F7; --nav-ink: #1C3055; }
+
+.swipe-hint {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(4.6rem, 11vh, 5.8rem);
+  translate: -50% 0;
+  z-index: 19;
+  margin: 0;
+  font-size: .66rem;
+  letter-spacing: .14em;
+  color: var(--nav-ink, #3B2E2B);
+  opacity: .55;
+  pointer-events: none;
+  transition: opacity .6s ease;
+}
+.swipe-hint.is-hidden { opacity: 0; }
+
+/* ---------- 8. responsive + motion ---------- */
+@media (max-width: 480px) {
+  .scene { padding-bottom: 5.4rem; }
+  .corner { opacity: .42; }
+  .env-hint { letter-spacing: .06em; }
+}
+
+@media (max-height: 700px) {
+  .envelope { --env-w: min(clamp(180px, 42vw, 260px), 40vh); }
+  .names-script { font-size: min(clamp(2.6rem, 11vw, 3.6rem), 10vh); }
+  .bismillah { font-size: min(clamp(1.2rem, 5vw, 1.7rem), 3.2vh); line-height: 1.7; }
+  .scene-inner { gap: .75rem; }
+}
+
+/* short windows: pull everything in so nothing is ever cut off */
+@media (max-height: 620px) {
+  .scene { padding-bottom: clamp(3.3rem, 9vh, 4.6rem); }
+  .scene-inner { gap: clamp(.35rem, 1.6vh, 1rem); }
+  .envelope { --env-w: min(clamp(186px, 50vw, 300px), 37vh); }
+  .names-script { font-size: min(clamp(2.4rem, 11vw, 4.4rem), 9vh); }
+  .closing-names { font-size: min(clamp(2rem, 9vw, 3.4rem), 7.5vh); }
+  .eyebrow-line { font-size: .73rem; line-height: 1.5; }
+  .closing-line { font-size: min(1.05rem, 2.5vh); line-height: 1.45; }
+  .flourish { width: clamp(88px, 26vw, 130px); }
+  .countdown { gap: .22rem; }
+  .cd-num { font-size: min(1.55rem, 3vh); }
+  .env-hint { font-size: .68rem; }
+  .card-shell.is-image { width: min(100%, 23rem, calc(58vh * var(--card-w) / var(--card-h))); }
+}
+
+/* very short windows */
+@media (max-height: 580px) {
+  .scene { padding-bottom: 3.1rem; }
+  .envelope { --env-w: min(clamp(168px, 46vw, 260px), 33vh); }
+  .names-script { font-size: min(clamp(2.1rem, 10vw, 3.6rem), 8vh); }
+  .closing-names { font-size: min(clamp(1.8rem, 8vw, 3rem), 6.6vh); }
+  .bismillah { font-size: min(1.35rem, 3vh); }
+  .cd-num { font-size: min(1.35rem, 2.7vh); }
+  .flourish { width: clamp(76px, 22vw, 110px); }
+}
+
+/* a phone held sideways: this invitation is made to be read upright */
+.rotate-hint { display: none; }
+@media (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
+  .rotate-hint {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: .9rem;
+    text-align: center;
+    background: radial-gradient(120% 90% at 50% 0%, #FFFCF7 0%, var(--ivory) 42%, #F5E4DE 100%);
+    color: var(--rose);
+  }
+  .rotate-hint svg { width: 54px; height: 54px; }
+  .rotate-hint p {
+    margin: 0;
+    font-family: var(--body);
+    font-size: .74rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+}
+
+@media (min-width: 900px) {
+  .scene-inner { max-width: 44rem; }
+}
+
+/* landscape phones */
+@media (max-height: 520px) and (orientation: landscape) {
+  .scene { padding-bottom: 4.2rem; align-items: start; }
+  .envelope { --env-w: 186px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .12s !important;
+  }
+  .petals { display: none; }
+}
